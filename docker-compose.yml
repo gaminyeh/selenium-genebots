@@ -1,0 +1,23 @@
+services:
+  
+  selenium-genebots:
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Taipei
+    image: gaminyeh/selenium-genebots
+    container_name: selenium-genebots
+    build:
+      context: .
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var:/var
+    command: "/bin/bash"
+    working_dir: /app
+    healthcheck:
+      test: ["CMD", "google-chrome", "--headless", "--disable-gpu", "--no-sandbox", "--dump-dom", "https://www.google.com/"]
+      interval: 60s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
