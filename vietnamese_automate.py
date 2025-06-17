@@ -64,18 +64,6 @@ def main():
     
     df = pd.read_csv("./input_data/vietnamese_example.csv", header=0)
     output_file = './vietnamese_update.csv'
-    # update_df = pd.read_csv(output_file, header=0)
-    # update_df = update_df.drop_duplicates(subset=["#Uploaded_variation", "ALT"])
-
-    # update_df.to_excel("9381_snp_vietnamese_db.xlsx", index=False)
-    # update_df.to_csv("9381_snp_vietnamese_db.csv", index=False)
-
-    # # unique_df = df[~df['#Uploaded_variation'].isin(update_df['#Uploaded_variation'])]
-    # # print(unique_df)
-    
-    # merge_df = pd.merge(df,update_df, how = 'left', left_on=["#Uploaded_variation", "Allele_GRCh"], right_on=["#Uploaded_variation", "ALT"])
-    # merge_df.to_excel("4480_amplicon_cover_9381_snp_AF_20250103_GRCh-TWBK_merged.uniq_withvn.xlsx", index=False)
-
 
     # 若 CSV 檔案不存在，則寫入標題行
     if not os.path.exists(output_file):
