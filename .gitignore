@@ -2,5 +2,6 @@ build/
 downloads/
 *.log
 .env
-*screenshot
+*screenshot*
 chromedriver*
+outputs*

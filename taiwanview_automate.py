@@ -57,14 +57,15 @@ def init_driver(driverpath, download_dir=None, implicit_wait=30):
 def main():
     driver_path = './chromedriver-linux64/chromedriver'
     base_url = 'https://taiwanview.twbiobank.org.tw/variant.php'   
-    screenshot_dir_path = f'./{log_time}_taiwanview_screenshot' 
+    screenshot_dir_path = f'{script_dir}/screenshots/{log_time}_taiwanview_screenshot' 
 
-    if not os.path.exists(screenshot_dir_path):
-        os.makedirs(screenshot_dir_path)
+    os.makedirs(screenshot_dir_path, exist_ok=True)
     
-    df = pd.read_csv("./input_data/taiwanview_example.csv", header=0)
+    df = pd.read_csv(args.input, header=0)
 
-    output_file = './taiwanview_update.csv'
+    output_file = args.output
+    dir_path = os.path.dirname(output_file)
+    os.makedirs(dir_path, exist_ok = True)
 
     # 若 CSV 檔案不存在，則寫入標題行
     if not os.path.exists(output_file):
@@ -152,7 +153,11 @@ def main():
 
 
 if __name__ == "__main__":
-        
+    parser = argparse.ArgumentParser(description='Get genetic variation info from Taiwan View.')
+    parser.add_argument('--input', help='Input file path. Default="./inputs/taiwanview_example.csv"', default="./inputs/taiwanview_example.csv")
+    parser.add_argument('--output', help='Output file path. Default="./outputs/taiwanview_example_output.csv"', default="./outputs/taiwanview_example_output.csv")
+    args = parser.parse_args()
+
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
     os.makedirs(f'{script_dir}/logs', exist_ok=True)    

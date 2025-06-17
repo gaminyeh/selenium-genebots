@@ -45,21 +45,16 @@ def init_driver(driverpath, download_dir=None, implicit_wait=10):
 def main():
     driver_path = './chromedriver-linux64/chromedriver'
     base_url = 'https://www.ncbi.nlm.nih.gov/snp/'   
-    screenshot_dir_path = f'./{log_time}_dbsnp_screenshot' 
-
-    if not os.path.exists(screenshot_dir_path):
-        os.makedirs(screenshot_dir_path)
+    screenshot_dir_path = f'{script_dir}/screenshots/{log_time}_dbsnp_screenshot' 
+    os.makedirs(screenshot_dir_path, exist_ok=True)
 
     disease_list = []
     no_results_list = [] 
     download_failed_list = []
 
-    if "xlsx" in input_file_path:
-        df =  pd.read_excel(input_file_path, header=0)
-    elif "csv" in input_file_path:
-        df =  pd.read_csv(input_file_path, header=0)
+    df =  pd.read_csv(args.input, header=0)
     
-    csv_filename = output_file_path
+    csv_filename = args.output
     if not os.path.exists(csv_filename) or os.path.getsize(csv_filename) == 0: # 檔案不存在或為空寫入column name
         with open(csv_filename, 'w', newline='') as f:
             f.write("Unnamed: 0,#Uploaded_variation,GRCh38,GRCh37\n")
@@ -118,7 +113,10 @@ def main():
 
 
 if __name__ == "__main__":
-        
+    parser = argparse.ArgumentParser(description='Get SNP GRCh38 GRCh37 position from NCBI-dbSNP.')
+    parser.add_argument('--input', help='Input file path. Default="./inputs/ncbi-dbSNP_example.csv"', default="./inputs/ncbi-dbSNP_example.csv")
+    parser.add_argument('--output', help='Output file path. Default="./outputs/ncbi-dbSNP_example_output.csv"', default="./outputs/ncbi-dbSNP_example_output.csv")
+    args = parser.parse_args()    
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
     os.makedirs(f'{script_dir}/logs', exist_ok=True)    
@@ -131,9 +129,5 @@ if __name__ == "__main__":
                             logging.FileHandler(logFileName, mode='a'),
                             logging.StreamHandler()
                         ])
-
-
-    input_file_path = input("Please enter the input path of the .xlsx or .csv file (e.g. ./input_data/ncbi-dbSNP_example.csv): ").strip()
-    output_file_path = input("Please enter the output .csv file path (e.g. ./ncbi-dbSNP_example_updated.csv): ").strip()
     
     main()

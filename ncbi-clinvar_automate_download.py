@@ -57,21 +57,19 @@ def init_driver(driverpath, download_dir=None, implicit_wait=30):
 def main():
     driver_path = './chromedriver-linux64/chromedriver'
     base_url = 'https://www.ncbi.nlm.nih.gov/clinvar/'   
-    download_path = f'{script_dir}/clinvar_download'
-    download_rename_path = f'{script_dir}/rename_clinvar_download'
-    screenshot_dir_path = f'./{log_time}_clinvar_screenshot' 
+    download_path = f'{script_dir}/outputs/clinvar_download'
+    download_rename_path = f'{script_dir}/outputs/rename_clinvar_download'
+    screenshot_dir_path = f'{script_dir}/screenshots/{log_time}_clinvar_screenshot' 
 
     os.makedirs(download_path, exist_ok=True)
     os.makedirs(download_rename_path, exist_ok=True)
-
-    if not os.path.exists(screenshot_dir_path):
-        os.makedirs(screenshot_dir_path)
+    os.makedirs(screenshot_dir_path, exist_ok=True)
 
     disease_list = []
     no_results_list = [] 
     download_failed_list = [] 
     
-    with open('./input_data/ncbi-clinvar_example_list.txt', 'r') as file:
+    with open(args.input, 'r') as file:
         for line in file:
             disease_list.append(line.strip())
     
@@ -185,7 +183,10 @@ def main():
 
 
 if __name__ == "__main__":
-        
+    parser = argparse.ArgumentParser(description='Download diease info from NCBI-Clinvar.')
+    parser.add_argument('--input', help='Input file path. Default="./inputs/ncbi-clinvar_example_list.txt"', default="./inputs/ncbi-clinvar_example_list.txt")
+    args = parser.parse_args()
+
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
     os.makedirs(f'{script_dir}/logs', exist_ok=True)    

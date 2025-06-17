@@ -52,18 +52,17 @@ def init_driver(driverpath, download_dir=None, implicit_wait=30):
     return driver
 
 
-
-
 def main():
     driver_path = './chromedriver-linux64/chromedriver'
     base_url = 'https://genomes.vn/'   
-    screenshot_dir_path = f'./{log_time}_vietnamese_screenshot' 
+    screenshot_dir_path = f'{script_dir}/screenshots/{log_time}_vietnamese_screenshot'
 
-    if not os.path.exists(screenshot_dir_path):
-        os.makedirs(screenshot_dir_path)
+    os.makedirs(screenshot_dir_path, exist_ok=True)
     
-    df = pd.read_csv("./input_data/vietnamese_example.csv", header=0)
-    output_file = './vietnamese_update.csv'
+    df = pd.read_csv(args.input, header=0)
+    output_file = args.output
+    dir_path = os.path.dirname(output_file)
+    os.makedirs(dir_path, exist_ok = True)
 
     # 若 CSV 檔案不存在，則寫入標題行
     if not os.path.exists(output_file):
@@ -151,7 +150,11 @@ def main():
 
 
 if __name__ == "__main__":
-        
+    parser = argparse.ArgumentParser(description='Get genetic variation info from Vietnamese Genetic Variation Database.')
+    parser.add_argument('--input', help='Input file path. Default="./inputs/vietnamese_example.csv"', default="./inputs/vietnamese_example.csv")
+    parser.add_argument('--output', help='Output file path. Default="./outputs/vietnamese_example_output.csv"', default="./outputs/vietnamese_example_output.csv")
+    args = parser.parse_args()
+
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
     os.makedirs(f'{script_dir}/logs', exist_ok=True)    
