@@ -33,6 +33,12 @@ Automated, Selenium‑powered crawlers for harvesting gene & variant data fr
 - **Container‑first workflow** – one‑line spin‑up using `docker-compose`.
 - **CSV output** ready for downstream analytics.
 
+| Script                              | Target database                                              | Input Fields              | Output Fields              |
+| ----------------------------------- | ------------------------------------------------------------ | ------------------------- | -------------------------- |
+| `ncbi-clinvar_automate_download.py` | [ClinVar](https://www.ncbi.nlm.nih.gov/clinvar/)             |  disease name e.g. Best Macular dystrophy | download disease-related `Variation`, `Gene (Protein Change)`, `Type(Consequence)`, `Condition`, `Classification, Review status` of the disease into a text file    
+| `ncbi-dbSNP_automate.py`            | [dbSNP](https://www.ncbi.nlm.nih.gov/snp/)                   |  rsID (a unique label of the specific SNP)           | `SNP position` in genome GRCh38 and GRCh37
+| `taiwanview_automate.py`            | [TaiwanView](https://taiwanview.twbiobank.org.tw/variant.php)|  rsID (a unique label of the specific SNP)           | `Gene` and `Allele Frequency, AF` of SNP        
+| `vietnamese_automate.py`            | [Vietnamese](https://genomes.vn/)                            |  rsID (a unique label of the specific SNP)           | `ALT`, `KHV`, `KHV-G` ,`Region` ,`Gene`, `Impact`, `AA Change` of SNP
 ---
 
 ## Project Structure
@@ -61,12 +67,12 @@ cd selenium-genebots
 docker compose up --build
 ```
 ### 3. Running the Bots
-| Script                              | Target database                                              | Example ( default --input with example file in ./inputs)                                                 |
-| ----------------------------------- | ------------------------------------------------------------ | --------------------------------------------------------- |
-| `ncbi-clinvar_automate_download.py` | [ClinVar](https://www.ncbi.nlm.nih.gov/clinvar/)             | `docker compose exec selenium-genebots python ncbi-clinvar_automate_download.py`    |
-| `ncbi-dbSNP_automate.py`            | [dbSNP](https://www.ncbi.nlm.nih.gov/snp/)                   | `docker compose exec selenium-genebots python ncbi-dbSNP_automate.py`          |
-| `taiwanview_automate.py`            | [TaiwanView](https://taiwanview.twbiobank.org.tw/variant.php)| `docker compose exec selenium-genebots python taiwanview_automate.py` |
-| `vietnamese_automate.py`            | [Vietnamese](https://genomes.vn/)                            | `docker compose exec selenium-genebots python vietnamese_automate.py`          |
+| Script                              | Target database                                              | Example (with default `--input` from `./inputs`)    | 
+| ----------------------------------- | ------------------------------------------------------------ | --------------------------------------------------------- | 
+| `ncbi-clinvar_automate_download.py` | [ClinVar](https://www.ncbi.nlm.nih.gov/clinvar/)             | `docker compose exec selenium-genebots python ncbi-clinvar_automate_download.py` | 
+| `ncbi-dbSNP_automate.py`            | [dbSNP](https://www.ncbi.nlm.nih.gov/snp/)                   | `docker compose exec selenium-genebots python ncbi-dbSNP_automate.py`            |
+| `taiwanview_automate.py`            | [TaiwanView](https://taiwanview.twbiobank.org.tw/variant.php)| `docker compose exec selenium-genebots python taiwanview_automate.py`            |
+| `vietnamese_automate.py`            | [Vietnamese](https://genomes.vn/)                            | `docker compose exec selenium-genebots python vietnamese_automate.py`            |
 
 ### 4. Outputs
 Default: an output in outputs/ screenshot photo(.png) in screenshots/ plus a verbose log in logs/.
